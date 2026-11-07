@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080e18"><meta name="description" content="Pocket AI - a playful voice companion with animated eyes and private camera tools">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css"><title>Pocket AI 2.0</title>
+</head>
+<body>
+<div class="shell">
+ <header><div class="brand"><span class="brand-icon">◉</span><span>POCKET <small>AI 2.0</small></span></div><span id="connection" class="status-chip">DEMO MODE</span></header>
+ <main>
+  <section class="face-card" aria-label="Animated robot face">
+   <div class="stars" aria-hidden="true"></div>
+   <div id="face" class="face" data-mood="idle">
+    <div class="eye eye-left"><div class="pupil"></div></div>
+    <div class="eye eye-right"><div class="pupil"></div></div>
+    <div class="talk-glow"></div>
+   </div>
+   <p id="mood" class="mood">I'm awake. Make it interesting.</p>
+   <div class="mode-indicator" id="modeIndicator">IDLE · READY</div>
+  </section>
+  <nav class="top-actions" aria-label="Robot controls">
+   <button type="button" id="listen" class="primary">🎙️ Talk</button>
+   <button type="button" id="cameraButton">📷 Vision</button>
+   <button type="button" id="settingsButton">⚙️ Settings</button>
+  </nav>
+  <section class="chat-card" aria-label="Conversation">
+   <div class="section-heading"><h2>Conversation</h2><button type="button" id="clearChat" class="text-button">Clear chat</button></div>
+   <div id="chat" class="chat-log" aria-live="polite"></div>
+   <form id="messageForm" class="compose"><input id="message" maxlength="1200" autocomplete="off" placeholder="Ask me something..." aria-label="Your message"><button type="submit" id="send">Send</button></form>
+   <p id="feedback" class="hint" role="status">Tip: Ask me to remember something.</p>
+  </section>
+  <section id="cameraPanel" class="panel" hidden>
+   <div class="section-heading"><h2>Vision mode</h2><button type="button" id="closeCamera" class="text-button">Close</button></div>
+   <p class="hint">Your existing MediaPipe face and hand tracking runs on the device. For general scene questions, tap <strong>Ask AI about this frame</strong>; that sends one still image to your configured AI service, only when you request it.</p>
+   <div class="video-stage"><video id="video" autoplay muted playsinline></video><canvas id="overlay"></canvas><span id="placeholder">Camera is off</span></div>
+   <div class="controls"><button type="button" id="start">Start camera</button><button type="button" id="stop" disabled>Stop</button><button type="button" id="switch" disabled>Flip</button><button type="button" id="describe" disabled>Ask AI about this frame</button></div>
+   <p id="visionStatus" class="hint">Camera off</p>
+   <div class="vision-stats"><p id="faceInfo">Faces: —</p><p id="handInfo">Hands: —</p><p id="motionInfo">Movement: —</p><p id="matchInfo">Saved face: —</p></div>
+   <details><summary>Private face library (experimental)</summary>
+    <p class="hint">This reuses the landmark-template technique from your Vision AI files. It is <strong>not reliable identity verification</strong>. Save only people who have consented.</p>
+    <label for="pass">Passphrase (10+ characters)</label><input type="password" id="pass" autocomplete="off" placeholder="Private face-library password">
+    <div class="controls"><button id="unlock" type="button">Create / unlock</button><button id="lock" type="button" disabled>Lock</button></div>
+    <label for="person">Name of consenting person</label><input id="person" maxlength="80" placeholder="Name">
+    <label class="checkbox-label"><input type="checkbox" id="consent"> This person agreed to save their face template.</label>
+    <button id="save" type="button" disabled>Save currently detected face</button><p id="libraryStatus" class="hint" role="status">Library locked</p><ul id="people"></ul>
+   </details>
+  </section>
+  <section id="settingsPanel" class="panel" hidden>
+   <div class="section-heading"><h2>Robot settings</h2><button id="closeSettings" type="button" class="text-button">Close</button></div>
+   <label for="endpoint">Your secure AI Worker URL (HTTPS)</label><input id="endpoint" type="url" inputmode="url" placeholder="https://your-worker.workers.dev" autocomplete="off">
+   <p class="hint">Never paste an AI provider API key here or into GitHub Pages files. The Worker holds that key privately.</p>
+   <label for="pin">Worker PIN (kept only in this tab's session)</label><input id="pin" type="password" placeholder="PIN configured in Cloudflare" autocomplete="off">
+   <div class="controls"><button id="saveSettings" type="button">Save connection</button><button id="testConnection" type="button">Test connection</button></div>
+   <label for="cheek">Cheekiness: <strong id="cheekValue">65%</strong></label><input id="cheek" type="range" min="0" max="100" value="65">
+   <label for="voice">Voice</label><select id="voice"><option value="">System default</option></select>
+   <label for="rate">Speaking speed: <span id="rateValue">1.0×</span></label><input id="rate" type="range" min="0.8" max="1.25" step="0.05" value="1">
+   <label class="checkbox-label"><input id="speakReplies" type="checkbox" checked> Speak replies aloud</label>
+   <div class="controls"><button id="testVoice" type="button">Test voice</button><button id="stopVoice" type="button">Stop speaking</button></div>
+   <div class="section-heading"><h3>Local memory</h3><button id="clearMemory" type="button" class="text-button danger">Forget saved notes</button></div>
+   <ul id="memories"></ul><p class="hint">Notes and recent text conversations are stored in this browser. Online AI messages are sent to your configured service. Clearing browser site data deletes your local notes and face library.</p>
+  </section>
+ </main>
+ <footer>Version 2.0 prototype · No always-on listening · No background camera access · Open-source web components</footer>
+</div>
+<script type="module" src="app.js"></script>
+</body></html>
